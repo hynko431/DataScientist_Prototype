@@ -1,0 +1,5 @@
+{
+  "name": "Agentic Data Scientist",
+  "description": "An AI-powered workbench for data scientists using Google ADK concepts. Features multi-agent orchestration for planning, coding, and analysis.",
+  "requestFramePermissions": []
+}
