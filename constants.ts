@@ -1,7 +1,7 @@
-export const MODEL_PLANNER = 'gemini-2.5-flash-lite';
+export const MODEL_PLANNER = 'gemini-2.5-flash';
 export const MODEL_CODER = 'gemini-2.5-pro';
-export const MODEL_SUMMARY = 'gemini-2.5-flash-lite';
-export const MODEL_CHATBOT = 'gemini-3-pro-preview';
+export const MODEL_SUMMARY = 'gemini-2.5-flash';
+export const MODEL_CHATBOT = 'gemini-2.5-flash';
 
 export const SYSTEM_INSTRUCTION_PLANNER = `
 You are the Lead Planner for an Agentic Data Science team. 

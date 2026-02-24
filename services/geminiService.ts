@@ -3,7 +3,14 @@ import { MODEL_PLANNER, MODEL_CODER, MODEL_SUMMARY, MODEL_CHATBOT, SYSTEM_INSTRU
 import { DashboardMetrics } from "../types";
 
 // Initialize the API client
-const apiKey = process.env.GEMINI_API_KEY || process.env.API_KEY || '';
+const apiKey = (import.meta as any).env.VITE_GEMINI_API_KEY || (typeof process !== 'undefined' ? process.env.GEMINI_API_KEY || process.env.API_KEY : '');
+
+if (!apiKey) {
+  console.warn("GEMINI_API_KEY is missing! AI features will not work. Please check your .env file or environment variables.");
+} else {
+  console.log("Gemini SDK initialized with API key (first 4 chars):", apiKey.substring(0, 4) + "...");
+}
+
 const genAI = new GoogleGenerativeAI(apiKey);
 
 export const generatePlan = async (userQuery: string, fileContext: string): Promise<string[]> => {
@@ -17,9 +24,9 @@ export const generatePlan = async (userQuery: string, fileContext: string): Prom
     // Cleanup markdown if present to ensure JSON parsing works
     const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
     return JSON.parse(cleanText);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error generating plan:", error);
-    return ["Error generating plan. Please try again."];
+    return [`Error generating plan: ${error.message || error}. Please ensure your API key is correct and you have quota.`];
   }
 };
 
@@ -38,9 +45,9 @@ export const generateCode = async (step: string, context: string): Promise<{ cod
     const explanation = text.replace(/```python[\s\S]*?```/g, '').trim();
 
     return { code, explanation };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error generating code:", error);
-    return { code: "# Error generating code", explanation: "An error occurred while contacting the coding agent." };
+    return { code: "# Error generating code", explanation: `An error occurred while contacting the coding agent: ${error.message || error}` };
   }
 };
 
@@ -52,9 +59,9 @@ export const generateSummary = async (executionLog: string, metricsContext: stri
     const result = await model.generateContent(prompt);
     const response = await result.response;
     return response.text() || "No summary generated.";
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error generating summary:", error);
-    return "Error generating summary.";
+    return `Error generating summary: ${error.message || error}`;
   }
 };
 
@@ -102,8 +109,8 @@ export const chatWithBot = async (history: { role: 'user' | 'model', content: st
     const result = await model.generateContent(prompt);
     const response = await result.response;
     return response.text() || "I'm sorry, I couldn't generate a response.";
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error in chatbot:", error);
-    return "I'm having trouble connecting to the network right now.";
+    return `Connection error: ${error.message || error}. Please check your API key and network.`;
   }
 };
