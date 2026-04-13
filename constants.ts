@@ -1,7 +1,13 @@
-export const MODEL_PLANNER = 'gemini-2.5-flash';
-export const MODEL_CODER = 'gemini-2.5-pro';
-export const MODEL_SUMMARY = 'gemini-2.5-flash';
-export const MODEL_CHATBOT = 'gemini-2.5-flash';
+// ---------------------------------------------------------------------------
+// NOTE: Individual MODEL_* constants are kept for backward compatibility.
+// The active model is now managed dynamically via FALLBACK_MODELS in
+// services/geminiService.ts — quota errors trigger automatic model rotation.
+// Fallback chain: gemini-2.5-flash-lite (only)
+// ---------------------------------------------------------------------------
+export const MODEL_PLANNER = 'gemini-2.5-flash-lite'; // primary; rotated automatically
+export const MODEL_CODER   = 'gemini-2.5-flash-lite'; // primary; rotated automatically
+export const MODEL_SUMMARY = 'gemini-2.5-flash-lite'; // primary; rotated automatically
+export const MODEL_CHATBOT = 'gemini-2.5-flash-lite'; // primary; rotated automatically
 
 export const SYSTEM_INSTRUCTION_PLANNER = `
 You are the Lead Planner for an Agentic Data Science team. 
